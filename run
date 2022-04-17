@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+
+run_cmd="docker run --rm -it --network host -v $(pwd):/srv/jekyll "
+
+IMAGE_NAME="myblog"
+TAG="dev"
+
+
+if [ "$1" = "build" ]; then
+    docker build -t "$IMAGE_NAME:$TAG" .
+
+    echo "==== Built image $IMAGE_NAME:$TAG ===="
+elif [ "$1" = "devserver" ]; then
+    $run_cmd -p 4000:4000 "$IMAGE_NAME:$TAG" jekyll serve --watch
+fi
